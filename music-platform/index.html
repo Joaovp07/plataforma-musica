@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ECLO — Leaked Archive</title>
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+
+  <!-- BACKGROUND LAYERS -->
+  <div class="bg-halftone" aria-hidden="true"></div>
+  <div class="bg-shapes" aria-hidden="true">
+    <span class="bs bs-sq1"></span>
+    <span class="bs bs-sq2"></span>
+    <span class="bs bs-sq3"></span>
+    <span class="bs bs-dia"></span>
+    <span class="bs bs-line1"></span>
+    <span class="bs bs-line2"></span>
+    <span class="bs bs-circ"></span>
+    <span class="bs-cross bx1"></span>
+    <span class="bs-cross bx2"></span>
+    <span class="bs-cross bx3"></span>
+  </div>
+  <div class="scanlines" aria-hidden="true"></div>
+
+
+  <!-- LANDING SCREEN -->
+  <div id="landing" role="button" aria-label="Enter site" tabindex="0">
+    <div class="illo-stage">
+      <div class="illo-glow"  aria-hidden="true"></div>
+      <div class="illo-ring"  aria-hidden="true"></div>
+      <img id="lnd-logo" src="assets/logo.png" alt="ECLO logo illustration" />
+    </div>
+  </div>
+
+
+  <!-- MAIN APP -->
+  <div id="app" aria-hidden="true">
+
+    <!-- ADMIN MODE BAR (hidden until logged in) -->
+    <div id="admin-bar" class="admin-bar" aria-hidden="true">
+      <span class="admin-bar-label">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+          <path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4z"/>
+        </svg>
+        ADMIN MODE
+      </span>
+      <button id="btn-logout" class="admin-logout-btn" aria-label="Logout admin">
+        LOGOUT
+      </button>
+    </div>
+
+    <!-- HEADER -->
+    <header>
+      <div class="h-left">
+        <div class="h-logo">
+          <img src="assets/logo.png" alt="ECLO" />
+        </div>
+        <span class="h-title">ECLO</span>
+        <span class="h-badge">LEAK ARCHIVE</span>
+      </div>
+
+      <div class="h-right">
+        <div class="h-status">
+          <div class="h-dot" aria-hidden="true"></div>
+          <span id="h-now">— SELECT A TRACK —</span>
+        </div>
+        <!-- ADMIN button — always visible in header -->
+        <button id="btn-admin-open" class="btn-admin-header" aria-label="Open admin login">
+          ADMIN
+        </button>
+      </div>
+    </header>
+
+
+    <!-- MAIN CONTENT -->
+    <main>
+
+      <!-- LIBRARY (left) -->
+      <section class="library-section" aria-label="Track library">
+        <div class="sec-header">
+          <span class="sec-title">Leak Library</span>
+          <div class="sec-header-right">
+            <span class="sec-count" id="s-count" aria-live="polite"></span>
+            <!-- + Nova Leak button (admin only) -->
+            <button id="btn-new-leak" class="btn-new-leak admin-only" aria-label="Add new leak" hidden>
+              + NOVA LEAK
+            </button>
+          </div>
+        </div>
+        <div class="track-list" id="tlist" role="list"></div>
+      </section>
+
+
+      <!-- PLAYER (right) -->
+      <aside class="player-wrap" aria-label="Music player">
+        <div class="player-card">
+
+          <div class="cover-frame" id="cover-frame">
+            <img id="p-cover" src="" alt="Album cover" />
+            <div class="cc cc-tl" aria-hidden="true"></div>
+            <div class="cc cc-tr" aria-hidden="true"></div>
+            <div class="cc cc-bl" aria-hidden="true"></div>
+            <div class="cc cc-br" aria-hidden="true"></div>
+          </div>
+
+          <p class="p-title"  id="p-title">SELECT A TRACK</p>
+          <p class="p-artist" id="p-artist">—</p>
+
+          <div class="prog-wrap" id="prog-wrap" role="progressbar" aria-label="Track progress">
+            <div class="prog-bg" id="prog-bg">
+              <div class="prog-fill" id="prog-fill"></div>
+            </div>
+            <div class="time-row">
+              <span id="t-cur">0:00</span>
+              <span id="t-tot">0:00</span>
+            </div>
+          </div>
+
+          <div class="controls">
+            <button class="c-btn" id="btn-prev" aria-label="Previous track">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                <path d="M6 6h2v12H6zm3.5 6l8.5 6V6z"/>
+              </svg>
+            </button>
+            <button class="play-btn" id="btn-play" aria-label="Reproduzir">
+              <svg id="play-icon" width="20" height="20" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                <path d="M8 5v14l11-7z"/>
+              </svg>
+            </button>
+            <button class="c-btn" id="btn-next" aria-label="Next track">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                <path d="M6 18l8.5-6L6 6v12zM16 6v12h2V6h-2z"/>
+              </svg>
+            </button>
+          </div>
+
+          <div class="vol-row">
+            <div class="v-icon" aria-hidden="true">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3A4.5 4.5 0 0 0 14 7.97v8.05c1.48-.73 2.5-2.25 2.5-4.02z"/>
+              </svg>
+            </div>
+            <input type="range" class="v-slider" id="vol-slider" min="0" max="100" value="80" aria-label="Volume" />
+            <div class="v-icon" aria-hidden="true">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3A4.5 4.5 0 0 0 14 7.97v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/>
+              </svg>
+            </div>
+          </div>
+
+        </div>
+      </aside>
+
+    </main>
+
+    <footer>
+      <span class="f-text">© 2024 ECLO</span>
+      <nav class="f-links" aria-label="Footer navigation">
+        <a href="#">SUBMIT</a>
+        <a href="#">ARCHIVE</a>
+        <a href="#">CONTACT</a>
+      </nav>
+    </footer>
+
+  </div><!-- /app -->
+
+
+  <!-- ============================================
+       ADMIN LOGIN MODAL
+  ============================================= -->
+  <div id="modal-login" class="modal-overlay" aria-hidden="true" role="dialog" aria-modal="true" aria-label="Admin login">
+    <div class="modal-box">
+      <button class="modal-close" id="modal-login-close" aria-label="Fechar modal">✕</button>
+      <div class="modal-title">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+          <path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4z"/>
+        </svg>
+        ADMIN LOGIN
+      </div>
+      <div id="login-error" class="login-error" aria-live="assertive" hidden>
+        Login ou senha incorretos
+      </div>
+      <label class="modal-label" for="input-login">E-MAIL</label>
+      <input class="modal-input" id="input-login" type="email" autocomplete="email" placeholder="seu@email.com" />
+      <label class="modal-label" for="input-pass">SENHA</label>
+      <input class="modal-input" id="input-pass" type="password" autocomplete="current-password" placeholder="Digite a senha" />
+      <button class="modal-submit" id="btn-login-submit">ENTRAR</button>
+    </div>
+  </div>
+
+
+  <!-- ============================================
+       NOVA LEAK MODAL
+  ============================================= -->
+  <div id="modal-new-leak" class="modal-overlay" aria-hidden="true" role="dialog" aria-modal="true" aria-label="Adicionar nova leak">
+    <div class="modal-box">
+      <button class="modal-close" id="modal-new-leak-close" aria-label="Fechar modal">✕</button>
+      <div class="modal-title">+ NOVA LEAK</div>
+
+      <label class="modal-label" for="nl-title">NOME DA MÚSICA</label>
+      <input class="modal-input" id="nl-title" type="text" placeholder="Ex: Shadow Protocol" />
+
+      <label class="modal-label" for="nl-artist">ARTISTA</label>
+      <input class="modal-input" id="nl-artist" type="text" placeholder="Ex: ECLO" />
+
+      <label class="modal-label" for="nl-audio">ÁUDIO (.mp3 / .wav)</label>
+      <label class="file-input-label" for="nl-audio">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M9 16h6v-6h4l-7-7-7 7h4v6zm-4 2h14v2H5z"/></svg>
+        <span id="nl-audio-name">Escolher arquivo de áudio</span>
+        <input class="file-input-hidden" id="nl-audio" type="file" accept=".mp3,.wav" />
+      </label>
+
+      <label class="modal-label" for="nl-cover">CAPA (imagem)</label>
+      <label class="file-input-label" for="nl-cover">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M9 16h6v-6h4l-7-7-7 7h4v6zm-4 2h14v2H5z"/></svg>
+        <span id="nl-cover-name">Escolher imagem de capa</span>
+        <input class="file-input-hidden" id="nl-cover" type="file" accept="image/*" />
+      </label>
+
+      <button class="modal-submit" id="btn-new-leak-submit">ADICIONAR LEAK</button>
+    </div>
+  </div>
+
+
+  <!-- AUDIO ELEMENT -->
+  <audio id="audio-player" preload="metadata"></audio>
+
+  <!-- SCRIPT -->
+  <script src="js/script.js"></script>
+  <!-- API: http://localhost:3000 — configure em js/script.js § API_BASE -->
+
+</body>
+</html>
