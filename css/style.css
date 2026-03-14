@@ -1,0 +1,1500 @@
+/* ==============================================
+   ECLO — Leaked Archive
+   style.css
+   
+   Table of contents:
+   0.  Custom font (@font-face)
+   1.  CSS Variables & Reset
+   2.  Background layers (halftone, shapes, scanlines)
+   3.  Landing screen
+   4.  Illustration stage (logo integration)
+   5.  App container
+   6.  Header
+   7.  Main layout
+   8.  Section header
+   9.  Track list & track items
+   10. Player card
+   11. Cover frame
+   12. Progress bar
+   13. Playback controls
+   14. Volume control
+   15. Footer
+   16. Animations (keyframes)
+   17. Responsive
+============================================== */
+
+
+/* ——————————————————————————————————————
+   0. CUSTOM FONT
+—————————————————————————————————————— */
+@font-face {
+  font-family: "CustomHelvetica";
+  src: url("../assets/fonts/Helvetica-Oblique.ttf") format("truetype");
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
+
+/* ——————————————————————————————————————
+   1. CSS VARIABLES & RESET
+—————————————————————————————————————— */
+:root {
+  --black:   #000000;
+  --white:   #f2f2f2;
+
+  /* grey tints used for secondary text / borders */
+  --grey1:   rgba(242, 242, 242, 0.60);
+  --grey2:   rgba(242, 242, 242, 0.25);
+  --grey3:   rgba(242, 242, 242, 0.08);
+
+  /* reusable border shortcuts */
+  --outline:      3px solid var(--white);
+  --outline-thin: 1.5px solid rgba(242, 242, 242, 0.18);
+}
+
+*,
+*::before,
+*::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "CustomHelvetica", sans-serif;
+}
+
+html,
+body {
+  width: 100%;
+  min-height: 100vh;
+  background: var(--black);
+  color: var(--white);
+  font-family: "CustomHelvetica", sans-serif;
+  overflow-x: hidden;
+  cursor: crosshair;
+}
+
+
+/* ——————————————————————————————————————
+   2. BACKGROUND LAYERS
+—————————————————————————————————————— */
+
+/* Halftone dot grid */
+.bg-halftone {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background-image: radial-gradient(
+    circle,
+    rgba(255, 255, 255, 0.032) 1px,
+    transparent 1px
+  );
+  background-size: 26px 26px;
+}
+
+/* Animated geometric shapes container */
+.bg-shapes {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+/* Base style for all shapes */
+.bs {
+  position: absolute;
+  border-style: solid;
+  border-color: rgba(255, 255, 255, 0.05);
+}
+
+/* Individual shape sizes & positions */
+.bs-sq1 {
+  width: 380px;
+  height: 380px;
+  top: -120px;
+  left: -100px;
+  border-width: 4px;
+  transform: rotate(18deg);
+  animation: spin1 40s linear infinite;
+}
+
+.bs-sq2 {
+  width: 240px;
+  height: 240px;
+  bottom: 5%;
+  right: -70px;
+  border-width: 3px;
+  transform: rotate(-10deg);
+  animation: spin2 32s linear infinite;
+}
+
+.bs-sq3 {
+  width: 160px;
+  height: 160px;
+  top: 38%;
+  left: 4%;
+  border-width: 3px;
+  transform: rotate(40deg);
+  animation: spin1 24s linear infinite reverse;
+}
+
+.bs-dia {
+  width: 100px;
+  height: 100px;
+  border-width: 3px;
+  bottom: 25%;
+  right: 20%;
+  transform: rotate(45deg);
+  animation: spin2 28s linear infinite;
+}
+
+.bs-line1 {
+  width: 180px;
+  height: 0;
+  border-width: 2px 0 0 0;
+  border-color: rgba(255, 255, 255, 0.04);
+  top: 20%;
+  right: 6%;
+  transform: rotate(-28deg);
+}
+
+.bs-line2 {
+  width: 120px;
+  height: 0;
+  border-width: 2px 0 0 0;
+  border-color: rgba(255, 255, 255, 0.04);
+  top: 70%;
+  left: 8%;
+  transform: rotate(14deg);
+}
+
+.bs-circ {
+  width: 200px;
+  height: 200px;
+  border-radius: 50%;
+  border-width: 2px;
+  border-color: rgba(255, 255, 255, 0.03);
+  top: 60%;
+  left: 60%;
+}
+
+/* Cross / plus decorations */
+.bs-cross {
+  position: absolute;
+  width: 20px;
+  height: 20px;
+}
+
+.bs-cross::before,
+.bs-cross::after {
+  content: '';
+  position: absolute;
+  background: rgba(255, 255, 255, 0.07);
+}
+
+.bs-cross::before {
+  width: 2px;
+  height: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.bs-cross::after {
+  width: 100%;
+  height: 2px;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.bx1 { top: 30%;    right: 12%; }
+.bx2 { top: 55%;    left: 20%;  }
+.bx3 { bottom: 30%; right: 35%; }
+
+/* CRT scanlines overlay */
+.scanlines {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background: repeating-linear-gradient(
+    0deg,
+    transparent,
+    transparent 3px,
+    rgba(0, 0, 0, 0.08) 3px,
+    rgba(0, 0, 0, 0.08) 4px
+  );
+}
+
+
+/* ——————————————————————————————————————
+   3. LANDING SCREEN
+—————————————————————————————————————— */
+#landing {
+  position: fixed;
+  inset: 0;
+  z-index: 200;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--black);
+  cursor: pointer;
+  /* smooth exit transition */
+  transition:
+    opacity 0.7s cubic-bezier(0.4, 0, 0.2, 1),
+    transform 0.7s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* triggered by JS to dismiss landing */
+#landing.exit {
+  opacity: 0;
+  transform: scale(1.1);
+  pointer-events: none;
+}
+
+
+/* ——————————————————————————————————————
+   4. ILLUSTRATION STAGE
+   Logo integration: blend + mask dissolve
+—————————————————————————————————————— */
+
+/* Wrapper — positioned absolutely by JS for DVD bounce */
+.illo-stage {
+  position: absolute;
+  width: min(28vh, 240px);
+  height: min(28vh, 240px);
+  will-change: transform;
+  /* no CSS animation — movement is handled entirely by script.js */
+}
+
+/* Corner-hit flash: class added/removed by script.js */
+.illo-stage.corner-hit img {
+  filter:
+    contrast(1.3)
+    brightness(1.4)
+    drop-shadow(0 0 30px rgba(255, 255, 255, 0.9))
+    drop-shadow(0 0 60px rgba(255, 255, 255, 0.5)) !important;
+  transition: filter 0.05s ease !important;
+}
+
+/* The logo image
+   mix-blend-mode: screen  → removes black background natively
+   mask-image              → dissolves edges into transparency   */
+.illo-stage img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+
+  mix-blend-mode: screen;
+  filter: contrast(1.1) brightness(0.95);
+
+  -webkit-mask-image: radial-gradient(
+    ellipse 68% 68% at 50% 52%,
+    black 0%,
+    black 35%,
+    rgba(0, 0, 0, 0.92) 50%,
+    rgba(0, 0, 0, 0.60) 62%,
+    rgba(0, 0, 0, 0.25) 74%,
+    transparent 88%
+  );
+  mask-image: radial-gradient(
+    ellipse 68% 68% at 50% 52%,
+    black 0%,
+    black 35%,
+    rgba(0, 0, 0, 0.92) 50%,
+    rgba(0, 0, 0, 0.60) 62%,
+    rgba(0, 0, 0, 0.25) 74%,
+    transparent 88%
+  );
+
+  transition: filter 0.35s ease;
+}
+
+/* Hover state — soft white glow */
+#landing:hover .illo-stage img {
+  filter:
+    contrast(1.15)
+    brightness(1.08)
+    drop-shadow(0 0 18px rgba(255, 255, 255, 0.18))
+    drop-shadow(0 0 40px rgba(200, 200, 200, 0.10));
+}
+
+/* Ambient glow layer behind the illustration */
+.illo-glow {
+  position: absolute;
+  inset: -30%;
+  border-radius: 50%;
+  background: radial-gradient(
+    ellipse at 50% 52%,
+    rgba(255, 255, 255, 0.04) 0%,
+    rgba(255, 255, 255, 0.015) 35%,
+    transparent 65%
+  );
+  pointer-events: none;
+  animation: glow-breathe 5s ease-in-out infinite;
+}
+
+#landing:hover .illo-glow {
+  background: radial-gradient(
+    ellipse at 50% 52%,
+    rgba(255, 255, 255, 0.10) 0%,
+    rgba(255, 255, 255, 0.04) 40%,
+    transparent 65%
+  );
+}
+
+/* Thin ring — only visible on hover */
+.illo-ring {
+  position: absolute;
+  inset: -12px;
+  border-radius: 50%;
+  border: 2.5px solid transparent;
+  pointer-events: none;
+  transition:
+    border-color 0.3s ease,
+    box-shadow   0.3s ease;
+}
+
+#landing:hover .illo-ring {
+  border-color: rgba(255, 255, 255, 0.12);
+  box-shadow: 0 0 24px rgba(255, 255, 255, 0.08);
+}
+
+
+/* ——————————————————————————————————————
+   5. APP CONTAINER
+—————————————————————————————————————— */
+#app {
+  position: relative;
+  z-index: 1;
+  min-height: 100vh;
+  opacity: 0;
+  transition: opacity 0.5s ease 0.1s;
+}
+
+/* revealed by JS after landing is dismissed */
+#app.on {
+  opacity: 1;
+}
+
+/*
+ * .leaving — triggered by goToHomeScreen()
+ * Fades the app out before hiding it (450 ms).
+ * Duration must match the setTimeout in script.js.
+ */
+#app.leaving {
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.45s ease;
+}
+
+
+/* ——————————————————————————————————————
+   6. HEADER
+—————————————————————————————————————— */
+header {
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  background: var(--black);
+  border-bottom: 3px solid var(--white);
+  padding: 0 32px;
+  height: 54px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  box-shadow: 0 4px 0 rgba(255, 255, 255, 0.06);
+}
+
+.h-left {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  border-radius: 2px;
+  padding: 4px 8px 4px 4px;
+  margin-left: -4px;
+  transition: background 0.15s ease, box-shadow 0.15s ease;
+  user-select: none;
+}
+
+/* Home-button hover — subtle cartoon invert */
+.h-left:hover {
+  background: rgba(255, 255, 255, 0.06);
+  box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.18);
+}
+
+.h-left:hover .h-title {
+  text-decoration: underline;
+  text-underline-offset: 4px;
+}
+
+.h-left:active {
+  background: rgba(255, 255, 255, 0.12);
+  transform: translateY(1px);
+}
+
+/* Small logo in header — same blend/mask technique */
+.h-logo {
+  width: 32px;
+  height: 32px;
+}
+
+.h-logo img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  mix-blend-mode: screen;
+  filter: contrast(1.1) brightness(0.9);
+  -webkit-mask-image: radial-gradient(circle at 50% 50%, black 40%, transparent 75%);
+  mask-image:         radial-gradient(circle at 50% 50%, black 40%, transparent 75%);
+}
+
+.h-title {
+  font-family: "CustomHelvetica", sans-serif;
+  font-size: 26px;
+  letter-spacing: 6px;
+  color: var(--white);
+  text-shadow: 2px 2px 0 rgba(0, 0, 0, 0.8);
+}
+
+.h-badge {
+  font-family: "CustomHelvetica", sans-serif;
+  font-size: 9px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--black);
+  background: var(--white);
+  padding: 2px 8px;
+}
+
+.h-status {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 11px;
+  letter-spacing: 1px;
+  color: var(--grey1);
+}
+
+/* Pulsing "live" dot */
+.h-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--white);
+  box-shadow: 0 0 8px rgba(255, 255, 255, 0.5);
+  animation: pulse 2s ease-in-out infinite;
+}
+
+
+/* ——————————————————————————————————————
+   7. MAIN LAYOUT
+—————————————————————————————————————— */
+main {
+  max-width: 1100px;
+  width: 100%;
+  margin: 0 auto;
+  padding: 36px 28px 110px;
+  display: grid;
+  grid-template-columns: 1fr 310px;
+  gap: 36px;
+  align-items: start;
+}
+
+
+/* ——————————————————————————————————————
+   8. SECTION HEADER
+—————————————————————————————————————— */
+.sec-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 14px;
+  padding-bottom: 8px;
+  border-bottom: 3px solid var(--white);
+}
+
+.sec-title {
+  font-family: "CustomHelvetica", sans-serif;
+  font-size: 22px;
+  letter-spacing: 4px;
+  color: var(--white);
+  text-shadow: 2px 2px 0 rgba(0, 0, 0, 0.6);
+}
+
+.sec-count {
+  font-size: 10px;
+  letter-spacing: 3px;
+  color: var(--grey1);
+  text-transform: uppercase;
+}
+
+
+/* ——————————————————————————————————————
+   9. TRACK LIST & TRACK ITEMS
+—————————————————————————————————————— */
+.track-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+.track-item {
+  display: grid;
+  grid-template-columns: 56px 1fr auto;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 12px;
+  cursor: pointer;
+  position: relative;
+  border: 1.5px solid transparent;
+  border-bottom: 1.5px solid rgba(255, 255, 255, 0.08);
+  transition: all 0.15s ease;
+}
+
+/* Left accent bar */
+.track-item::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 3px;
+  background: var(--white);
+  opacity: 0;
+  transition: opacity 0.15s;
+}
+
+/* Hover state */
+.track-item:hover {
+  background: rgba(255, 255, 255, 0.04);
+  border-color: rgba(255, 255, 255, 0.14);
+  border-bottom-color: rgba(255, 255, 255, 0.14);
+  transform: translateX(4px);
+}
+
+.track-item:hover::after {
+  opacity: 0.5;
+}
+
+/* Active / playing state */
+.track-item.active {
+  background: rgba(255, 255, 255, 0.06);
+  border-color: rgba(255, 255, 255, 0.25);
+  border-bottom-color: rgba(255, 255, 255, 0.25);
+  box-shadow: inset 0 0 14px rgba(255, 255, 255, 0.03);
+}
+
+.track-item.active::after {
+  opacity: 1;
+}
+
+/* Thumbnail */
+.t-thumb {
+  width: 56px;
+  height: 56px;
+  overflow: hidden;
+  position: relative;
+  flex-shrink: 0;
+  border: 2px solid rgba(255, 255, 255, 0.12);
+}
+
+.track-item.active .t-thumb {
+  border-color: rgba(255, 255, 255, 0.50);
+  box-shadow: 0 0 10px rgba(255, 255, 255, 0.15);
+}
+
+.t-thumb img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  filter: grayscale(100%) contrast(1.2);
+  transition: filter 0.2s;
+}
+
+.track-item:hover .t-thumb img,
+.track-item.active .t-thumb img {
+  filter: grayscale(60%) contrast(1.3);
+}
+
+/* Play icon overlay on thumbnail */
+.t-overlay {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0, 0, 0, 0.58);
+  opacity: 0;
+  transition: opacity 0.15s;
+}
+
+.track-item:hover .t-overlay,
+.track-item.active .t-overlay {
+  opacity: 1;
+}
+
+/* Track name & tags */
+.t-meta {
+  min-width: 0;
+}
+
+.t-name {
+  font-family: "CustomHelvetica", sans-serif;
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--white);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin-bottom: 5px;
+}
+
+.t-tags {
+  display: flex;
+  gap: 4px;
+  flex-wrap: wrap;
+}
+
+.tag {
+  font-family: "CustomHelvetica", sans-serif;
+  font-size: 9px;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: var(--grey1);
+  border: 1.5px solid rgba(255, 255, 255, 0.16);
+  padding: 1px 6px;
+}
+
+/* Highlighted tag variant */
+.tag.hi {
+  color: var(--white);
+  border-color: rgba(255, 255, 255, 0.45);
+}
+
+/* Duration + equalizer (right side of track item) */
+.t-right {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 4px;
+}
+
+.t-dur {
+  font-family: "CustomHelvetica", sans-serif;
+  font-size: 12px;
+  color: var(--grey2);
+}
+
+/* Equalizer bars — shown when track is active & playing */
+.eq-bars {
+  display: none;
+  align-items: flex-end;
+  gap: 2px;
+  height: 14px;
+}
+
+.track-item.active.playing .eq-bars {
+  display: flex;
+}
+
+/* Hide duration when eq is shown */
+.track-item.active.playing .t-dur {
+  display: none;
+}
+
+.eq-b {
+  width: 3px;
+  background: var(--white);
+  transform-origin: bottom;
+}
+
+.eq-b:nth-child(1) { height: 8px;  animation: eq 0.7s ease-in-out infinite alternate; }
+.eq-b:nth-child(2) { height: 14px; animation: eq 0.5s ease-in-out infinite alternate 0.1s; }
+.eq-b:nth-child(3) { height: 10px; animation: eq 0.6s ease-in-out infinite alternate 0.2s; }
+.eq-b:nth-child(4) { height: 12px; animation: eq 0.8s ease-in-out infinite alternate 0.15s; }
+
+
+/* ——————————————————————————————————————
+   10. PLAYER CARD
+—————————————————————————————————————— */
+.player-wrap {
+  position: sticky;
+  top: 74px;
+}
+
+.player-card {
+  background: #060606;
+  border: 3px solid var(--white);
+  box-shadow: 5px 5px 0 rgba(255, 255, 255, 0.12);
+  padding: 22px;
+  position: relative;
+}
+
+/* "Now Playing" label above card border */
+.player-card::before {
+  content: '// NOW PLAYING';
+  position: absolute;
+  top: -13px;
+  left: 12px;
+  background: var(--black);
+  padding: 0 8px;
+  font-family: "CustomHelvetica", sans-serif;
+  font-size: 10px;
+  letter-spacing: 3px;
+  color: var(--grey1);
+}
+
+/* Track title */
+.p-title {
+  font-family: "CustomHelvetica", sans-serif;
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--white);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  margin-bottom: 3px;
+}
+
+/* Artist name */
+.p-artist {
+  font-size: 10px;
+  letter-spacing: 3px;
+  color: var(--grey1);
+  text-transform: uppercase;
+  margin-bottom: 14px;
+}
+
+
+/* ——————————————————————————————————————
+   11. COVER FRAME
+—————————————————————————————————————— */
+.cover-frame {
+  width: 100%;
+  aspect-ratio: 1;
+  position: relative;
+  overflow: hidden;
+  border: 3px solid rgba(255, 255, 255, 0.15);
+  margin-bottom: 16px;
+}
+
+#p-cover {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  filter: grayscale(60%) contrast(1.15);
+  transition: opacity 0.3s ease;
+}
+
+/* Dimmed while loading new cover */
+.cover-frame.loading #p-cover {
+  opacity: 0.25;
+}
+
+/* Cartoon corner mark decorations */
+.cc {
+  position: absolute;
+  width: 13px;
+  height: 13px;
+  border-color: var(--white);
+  border-style: solid;
+}
+
+.cc-tl { top: 5px;    left: 5px;   border-width: 2px 0 0 2px; }
+.cc-tr { top: 5px;    right: 5px;  border-width: 2px 2px 0 0; }
+.cc-bl { bottom: 5px; left: 5px;   border-width: 0 0 2px 2px; }
+.cc-br { bottom: 5px; right: 5px;  border-width: 0 2px 2px 0; }
+
+
+/* ——————————————————————————————————————
+   12. PROGRESS BAR
+—————————————————————————————————————— */
+.prog-wrap {
+  margin-bottom: 12px;
+  cursor: pointer;
+}
+
+.prog-bg {
+  width: 100%;
+  height: 3px;
+  background: rgba(255, 255, 255, 0.10);
+  border: 1px solid rgba(255, 255, 255, 0.07);
+  position: relative;
+  cursor: pointer;
+  transition: height 0.15s;
+}
+
+.prog-bg:hover {
+  height: 6px;
+}
+
+.prog-fill {
+  height: 100%;
+  width: 0%;
+  background: var(--white);
+  box-shadow: 0 0 6px rgba(255, 255, 255, 0.3);
+  transition: width 0.1s linear;
+}
+
+.time-row {
+  display: flex;
+  justify-content: space-between;
+  font-size: 11px;
+  color: var(--grey2);
+  margin-top: 5px;
+  font-family: "CustomHelvetica", sans-serif;
+}
+
+
+/* ——————————————————————————————————————
+   13. PLAYBACK CONTROLS
+—————————————————————————————————————— */
+.controls {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  margin-bottom: 14px;
+}
+
+/* Prev / Next buttons */
+.c-btn {
+  background: none;
+  border: 2px solid rgba(255, 255, 255, 0.18);
+  cursor: pointer;
+  color: rgba(255, 255, 255, 0.45);
+  padding: 7px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.1s ease;
+}
+
+.c-btn:hover {
+  color: var(--white);
+  border-color: var(--white);
+  box-shadow: 2px 2px 0 rgba(255, 255, 255, 0.15);
+  transform: scale(1.07);
+}
+
+.c-btn:active {
+  transform: scale(0.93);
+}
+
+/* Play / Pause button — cartoon style */
+.play-btn {
+  width: 52px;
+  height: 52px;
+  background: var(--white);
+  border: 3px solid var(--white);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  color: var(--black);
+  box-shadow: 4px 4px 0 rgba(255, 255, 255, 0.15);
+  transition: all 0.1s ease;
+}
+
+.play-btn:hover {
+  background: var(--black);
+  color: var(--white);
+  box-shadow: 5px 5px 0 rgba(255, 255, 255, 0.20);
+  transform: translate(-1px, -1px);
+}
+
+.play-btn:active {
+  transform: translate(3px, 3px);
+  box-shadow: 1px 1px 0 rgba(255, 255, 255, 0.10);
+}
+
+
+/* ——————————————————————————————————————
+   14. VOLUME CONTROL
+—————————————————————————————————————— */
+.vol-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.v-icon {
+  color: var(--grey2);
+  flex-shrink: 0;
+}
+
+/* Custom range slider */
+input[type='range'].v-slider {
+  flex: 1;
+  -webkit-appearance: none;
+  appearance: none;
+  height: 3px;
+  /* fill colour is updated via JS inline style --vol variable */
+  background: linear-gradient(
+    90deg,
+    var(--white) var(--vol, 80%),
+    rgba(255, 255, 255, 0.10) var(--vol, 80%)
+  );
+  cursor: pointer;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+input[type='range'].v-slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 12px;
+  height: 12px;
+  background: var(--white);
+  border: 2px solid var(--black);
+  cursor: pointer;
+}
+
+input[type='range'].v-slider::-moz-range-thumb {
+  width: 12px;
+  height: 12px;
+  background: var(--white);
+  border: 2px solid var(--black);
+  cursor: pointer;
+  border-radius: 0;
+}
+
+
+/* ——————————————————————————————————————
+   15. FOOTER
+—————————————————————————————————————— */
+footer {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 10;
+  background: var(--black);
+  border-top: 3px solid var(--white);
+  box-shadow: 0 -3px 0 rgba(255, 255, 255, 0.06);
+  padding: 0 32px;
+  height: 42px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.f-text {
+  font-family: "CustomHelvetica", sans-serif;
+  font-size: 10px;
+  letter-spacing: 3px;
+  color: var(--grey2);
+  text-transform: uppercase;
+}
+
+.f-links {
+  display: flex;
+  gap: 20px;
+}
+
+.f-links a {
+  font-family: "CustomHelvetica", sans-serif;
+  font-size: 16px;
+  letter-spacing: 3px;
+  color: var(--grey2);
+  text-decoration: none;
+  text-transform: uppercase;
+  transition: color 0.15s, text-shadow 0.15s;
+}
+
+.f-links a:hover {
+  color: var(--white);
+  text-shadow: 0 0 12px rgba(255, 255, 255, 0.40);
+}
+
+
+/* ——————————————————————————————————————
+   16. KEYFRAME ANIMATIONS
+—————————————————————————————————————— */
+
+/* Corner flash pulse — triggered by JS class .corner-hit */
+@keyframes corner-flash {
+  0%   { opacity: 1; }
+  50%  { opacity: 0.6; }
+  100% { opacity: 1; }
+}
+
+/* Ambient glow scale */
+@keyframes glow-breathe {
+  0%,  100% { opacity: 0.8; transform: scale(0.97); }
+  50%        { opacity: 1;   transform: scale(1.03); }
+}
+
+/* Live indicator pulse */
+@keyframes pulse {
+  0%,  100% { opacity: 1;   box-shadow: 0 0 6px rgba(255, 255, 255, 0.50); }
+  50%        { opacity: 0.4; box-shadow: 0 0 2px rgba(255, 255, 255, 0.20); }
+}
+
+/* Equalizer bars */
+@keyframes eq {
+  from { transform: scaleY(0.2); }
+  to   { transform: scaleY(1.0); }
+}
+
+/* Background shape rotation */
+@keyframes spin1 {
+  to { transform: rotate(calc(18deg  + 360deg)); }
+}
+
+@keyframes spin2 {
+  to { transform: rotate(calc(-10deg - 360deg)); }
+}
+
+
+/* ——————————————————————————————————————
+   17. RESPONSIVE — mobile breakpoint
+—————————————————————————————————————— */
+@media (max-width: 720px) {
+  main {
+    grid-template-columns: 1fr;
+    padding: 20px 16px 100px;
+    gap: 28px;
+  }
+
+  /* Player no longer sticky on mobile — stacks below library */
+  .player-wrap {
+    position: static;
+  }
+
+  header {
+    padding: 0 16px;
+  }
+
+  footer {
+    padding: 0 16px;
+  }
+}
+
+
+/* ══════════════════════════════════════════════════
+   ADMIN SYSTEM — Adições de estilo
+   (adicionado ao final do style.css)
+══════════════════════════════════════════════════ */
+
+
+/* ——————————————————————————————————————
+   ADMIN BAR — faixa no topo do app
+—————————————————————————————————————— */
+.admin-bar {
+  position: sticky;
+  top: 0;
+  z-index: 60;               /* acima do header */
+  display: none;             /* escondida por padrão */
+  align-items: center;
+  justify-content: space-between;
+  background: var(--white);
+  color: var(--black);
+  padding: 0 32px;
+  height: 34px;
+  border-bottom: 3px solid var(--black);
+  box-shadow: 0 3px 0 rgba(0,0,0,0.4);
+  font-size: 11px;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  animation: slideDown 0.3s ease;
+}
+
+.admin-bar.visible {
+  display: flex;
+}
+
+.admin-bar-label {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  font-weight: 700;
+}
+
+.admin-logout-btn {
+  background: var(--black);
+  color: var(--white);
+  border: 2px solid var(--black);
+  padding: 3px 14px;
+  font-size: 10px;
+  letter-spacing: 2px;
+  cursor: pointer;
+  text-transform: uppercase;
+  transition: background 0.1s, color 0.1s;
+}
+
+.admin-logout-btn:hover {
+  background: transparent;
+  color: var(--black);
+}
+
+@keyframes slideDown {
+  from { transform: translateY(-34px); opacity: 0; }
+  to   { transform: translateY(0);     opacity: 1; }
+}
+
+
+/* ——————————————————————————————————————
+   BOTÃO ADMIN NO HEADER
+—————————————————————————————————————— */
+.btn-admin-header {
+  background: transparent;
+  color: var(--grey2);
+  border: 1.5px solid rgba(255,255,255,0.2);
+  padding: 4px 14px;
+  font-size: 10px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.btn-admin-header:hover {
+  color: var(--white);
+  border-color: var(--white);
+  box-shadow: 2px 2px 0 rgba(255,255,255,0.15);
+}
+
+.btn-admin-header.active {
+  background: var(--white);
+  color: var(--black);
+  border-color: var(--white);
+}
+
+/* h-right: agrupa status + botão admin */
+.h-right {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+
+/* ——————————————————————————————————————
+   BOTÃO + NOVA LEAK
+—————————————————————————————————————— */
+.sec-header-right {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.btn-new-leak {
+  background: var(--white);
+  color: var(--black);
+  border: 2px solid var(--white);
+  padding: 4px 14px;
+  font-size: 10px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  cursor: pointer;
+  box-shadow: 2px 2px 0 rgba(255,255,255,0.2);
+  transition: all 0.1s ease;
+}
+
+.btn-new-leak:hover {
+  background: transparent;
+  color: var(--white);
+  box-shadow: 3px 3px 0 rgba(255,255,255,0.15);
+}
+
+.btn-new-leak:active {
+  transform: translate(1px,1px);
+  box-shadow: 1px 1px 0 rgba(255,255,255,0.1);
+}
+
+
+/* ——————————————————————————————————————
+   CONTROLES ADMIN POR TRACK
+—————————————————————————————————————— */
+.track-admin-controls {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: 6px;
+  flex-wrap: wrap;
+}
+
+/* Label que age como botão (contém file input oculto) */
+.track-admin-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  background: transparent;
+  color: var(--grey1);
+  border: 1.5px solid rgba(255,255,255,0.18);
+  padding: 2px 10px;
+  font-size: 9px;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: color 0.1s, border-color 0.1s, background 0.1s;
+  user-select: none;
+  white-space: nowrap;
+}
+
+.track-admin-btn:hover {
+  color: var(--white);
+  border-color: var(--white);
+  background: rgba(255,255,255,0.06);
+}
+
+.track-delete-btn {
+  color: rgba(255,255,255,0.35);
+  border-color: rgba(255,255,255,0.12);
+  padding: 2px 8px;
+}
+
+.track-delete-btn:hover {
+  color: var(--white);
+  background: rgba(255,255,255,0.1);
+  border-color: rgba(255,255,255,0.4);
+}
+
+
+/* ——————————————————————————————————————
+   MODAL — overlay + caixa
+—————————————————————————————————————— */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 300;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0,0,0,0.78);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+
+  /* Escondido por padrão */
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.25s ease;
+}
+
+.modal-overlay.open {
+  opacity: 1;
+  pointer-events: all;
+}
+
+.modal-box {
+  position: relative;
+  background: #0a0a0a;
+  border: 3px solid var(--white);
+  box-shadow:
+    6px 6px 0 rgba(255,255,255,0.12),
+    0 0 40px rgba(0,0,0,0.8);
+  padding: 32px 28px 28px;
+  width: min(90vw, 380px);
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  animation: modalIn 0.25s ease;
+}
+
+@keyframes modalIn {
+  from { transform: scale(0.92) translateY(-10px); opacity: 0; }
+  to   { transform: scale(1) translateY(0);        opacity: 1; }
+}
+
+.modal-close {
+  position: absolute;
+  top: 10px;
+  right: 12px;
+  background: none;
+  border: none;
+  color: var(--grey1);
+  font-size: 16px;
+  cursor: pointer;
+  line-height: 1;
+  padding: 4px 6px;
+  transition: color 0.1s;
+}
+
+.modal-close:hover { color: var(--white); }
+
+.modal-title {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 16px;
+  letter-spacing: 4px;
+  text-transform: uppercase;
+  color: var(--white);
+  margin-bottom: 6px;
+  padding-bottom: 12px;
+  border-bottom: 2px solid rgba(255,255,255,0.12);
+}
+
+.modal-label {
+  font-size: 9px;
+  letter-spacing: 3px;
+  color: var(--grey1);
+  text-transform: uppercase;
+  margin-top: 4px;
+}
+
+.modal-input {
+  width: 100%;
+  background: rgba(255,255,255,0.04);
+  border: 2px solid rgba(255,255,255,0.2);
+  color: var(--white);
+  padding: 10px 12px;
+  font-size: 13px;
+  letter-spacing: 1px;
+  outline: none;
+  transition: border-color 0.15s;
+}
+
+.modal-input:focus {
+  border-color: var(--white);
+  background: rgba(255,255,255,0.07);
+}
+
+.modal-input.input-error {
+  border-color: rgba(255,100,100,0.8);
+  animation: shake 0.35s ease;
+}
+
+@keyframes shake {
+  0%,100% { transform: translateX(0); }
+  20%,60% { transform: translateX(-6px); }
+  40%,80% { transform: translateX(6px); }
+}
+
+.modal-submit {
+  background: var(--white);
+  color: var(--black);
+  border: 3px solid var(--white);
+  padding: 10px;
+  font-size: 12px;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  cursor: pointer;
+  margin-top: 8px;
+  box-shadow: 3px 3px 0 rgba(255,255,255,0.15);
+  transition: all 0.1s ease;
+}
+
+.modal-submit:hover {
+  background: transparent;
+  color: var(--white);
+  box-shadow: 4px 4px 0 rgba(255,255,255,0.12);
+  transform: translate(-1px,-1px);
+}
+
+.modal-submit:active {
+  transform: translate(2px,2px);
+  box-shadow: 1px 1px 0 rgba(255,255,255,0.1);
+}
+
+/* Mensagem de erro login */
+.login-error {
+  background: rgba(200,50,50,0.15);
+  border: 1.5px solid rgba(255,100,100,0.4);
+  color: rgba(255,140,140,1);
+  padding: 8px 12px;
+  font-size: 11px;
+  letter-spacing: 1px;
+  text-align: center;
+}
+
+
+/* ——————————————————————————————————————
+   FILE INPUT — label estilizada
+—————————————————————————————————————— */
+.file-input-label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+  background: rgba(255,255,255,0.04);
+  border: 2px solid rgba(255,255,255,0.2);
+  color: var(--grey1);
+  padding: 10px 12px;
+  font-size: 11px;
+  letter-spacing: 1px;
+  cursor: pointer;
+  transition: border-color 0.15s, background 0.15s;
+  overflow: hidden;
+}
+
+.file-input-label:hover {
+  border-color: var(--white);
+  color: var(--white);
+  background: rgba(255,255,255,0.07);
+}
+
+.file-input-label svg {
+  flex-shrink: 0;
+}
+
+.file-input-label span {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* Input real fica invisível mas acessível */
+.file-input-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  opacity: 0;
+  pointer-events: none;
+}
+
+
+/* ——————————————————————————————————————
+   RESPONSIVE — admin adjustments
+—————————————————————————————————————— */
+@media (max-width: 720px) {
+  .admin-bar { padding: 0 16px; }
+  .h-right   { gap: 10px; }
+  .btn-admin-header { padding: 3px 10px; font-size: 9px; }
+  .modal-box { padding: 24px 18px 20px; }
+}
+
+
+/* ══════════════════════════════════════════════════════
+   ECLO API INTEGRATION — estilos adicionais
+══════════════════════════════════════════════════════ */
+
+/* Animação de ondas na track ativa */
+.t-wave {
+  display: flex;
+  align-items: flex-end;
+  gap: 2px;
+  height: 14px;
+  margin-top: 2px;
+}
+.t-wave span {
+  display: block;
+  width: 3px;
+  background: var(--white);
+  border-radius: 1px;
+  animation: wave-bar 0.8s ease-in-out infinite;
+}
+.t-wave span:nth-child(1) { animation-delay: 0s;    height: 8px; }
+.t-wave span:nth-child(2) { animation-delay: 0.15s; height: 14px; }
+.t-wave span:nth-child(3) { animation-delay: 0.3s;  height: 5px; }
+
+@keyframes wave-bar {
+  0%, 100% { transform: scaleY(0.4); opacity: 0.6; }
+  50%       { transform: scaleY(1);   opacity: 1; }
+}
+
+/* Esconde track ativa com ondas no .t-right */
+.track-item .t-right {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 4px;
+}
